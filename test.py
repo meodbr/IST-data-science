@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Load the dataset
-file_path = "C:/Users/33684/Data_science_project/dataset/class_financial distress.csv"
+file_path = "C:/Users/33684/Data_science_project/dataset/class_ny_arrests.csv"
 df = pd.read_csv(file_path)
 
 # 1. Data Dimensionality

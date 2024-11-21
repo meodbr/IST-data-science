@@ -7,7 +7,7 @@ import os
 os.makedirs("images", exist_ok=True)
 
 # File details
-filename = "dataset/class_financial distress.csv"
+filename = "dataset/class_ny_arrests.csv"
 file_tag = "financial_distress"
 
 # Load the dataset
@@ -35,31 +35,6 @@ plot_bar_chart(keys, counts, title="Nr of records vs nr variables")
 savefig(f"images/{file_tag}_records_variables.png")
 show()
 
-# Missing values analysis
-mv = {}
-for var in data.columns:
-    missing_count = data[var].isna().sum()
-    if missing_count > 0:
-        mv[var] = missing_count
-
-# Plot missing values
-if mv:
-    figure(figsize=(6, 4))
-    plot_bar_chart(
-        list(mv.keys()),
-        list(mv.values()),
-        title="Nr of missing values per variable",
-        xlabel="Variables",
-        ylabel="Nr missing values",
-    )
-    savefig(f"images/{file_tag}_missing_values.png")
-    show()
-else:
-    print("No missing values in the dataset.")
-
 # Dataset dimensionality summary
 print(f"Number of records: {nr_records}")
 print(f"Number of variables: {nr_variables}")
-print("Missing values per variable:")
-for var, count in mv.items():
-    print(f"  {var}: {count}")
