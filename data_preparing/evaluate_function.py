@@ -12,7 +12,7 @@ def split_and_clean_data(data: DataFrame, target: str = "class", test_size: floa
 
 def main(dataset_path: str, target: str = "class"):
     # Load the dataset
-    data: DataFrame = read_csv(dataset_path)
+    data: DataFrame = read_csv(dataset_path)[::10]
     
     # Split and clean the data (70% training, 30% testing)
     train, test = split_and_clean_data(data, target=target, test_size=0.3)
@@ -23,13 +23,13 @@ def main(dataset_path: str, target: str = "class"):
     # Plot and save the evaluation results
     figure()
     plot_multibar_chart(
-        ["NB", "KNN"], eval_results, title="Evaluation after Dropping Outliers", percentage=True
+        ["NB", "KNN"], eval_results, title="Evaluation after Dropping Missing Values", percentage=True
     )
-    savefig("images/evaluation_after_dropping_outliers.png")
+    savefig("data_preparing/images/evaluation_after_dropping_missing_values.png")
     show()
 
 
 
 # Example of running the main function with your dataset
-dataset_path = "../dataset/classification/class_financial_distress_drop_outliers.csv"  # Change this path to your actual dataset
-main(dataset_path, target="CLASS")  # "CLASS" should be the target variable of your dataset
+dataset_path = "dataset\encoded_set_1_without_missing_values.csv"  # Change this path to your actual dataset
+main(dataset_path, target="LAW_CAT_CD")  # "CLASS" should be the target variable of your dataset

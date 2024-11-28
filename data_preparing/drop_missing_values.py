@@ -30,6 +30,7 @@ def mvi_by_dropping(
 
     return df
 
+
 # Main function
 if __name__ == "__main__":
     # Load your dataset
