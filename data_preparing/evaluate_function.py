@@ -32,22 +32,22 @@ def main(dataset_path: str, target: str = "class", balancing_method: str = "noth
     # Plot and save the evaluation results
     figure()
     plot_multibar_chart(
-        ["NB", "KNN"], eval_results, title="Evaluation after Dropping Outliers", percentage=True
+        ["NB", "KNN"], eval_results, title="Evaluation test", percentage=True
     )
-    savefig("images/evaluation_after_dropping_outliers.png")
+    savefig("data_preparing/images/evaluation_tests.png")
     show()
 
 
 
 # Example of running the main function with your dataset
-balancing_method = "nothing"  # Change this to "nothing", "undersampling", "oversampling" or "SMOTE" if you want to use another method
+balancing_method = "SMOTE"  # Change this to "nothing", "undersampling", "oversampling" or "SMOTE" if you want to use another method
 
 # divide_by = 10  # Change this to 1 if you don't want to decimate the dataset
 # dataset_path = "../dataset/classification/set1_encoded.csv"  # Change this path to your actual dataset
 # target = "LAW_CAT_CD"
 
 divide_by = 1  # Change this to 1 if you don't want to decimate the dataset
-dataset_path = "../dataset/classification/class_financial_distress.csv"  # Change this path to your actual dataset
+dataset_path = "dataset/classification/class_financial_distress.csv"  # Change this path to your actual dataset
 target = "CLASS"
 
 main(dataset_path, target, balancing_method, divide_by)  # "CLASS" should be the target variable of your dataset
