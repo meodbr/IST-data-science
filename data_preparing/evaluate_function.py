@@ -14,7 +14,8 @@ def split_and_clean_data(data: DataFrame, target: str = "class", test_size: floa
 def main(dataset_path: str, target: str = "class", balancing_method: str = "nothing", divide_by = 1) -> None:
     # Load the dataset
     data: DataFrame = read_csv(dataset_path)
-    
+    # Vérifiez les valeurs uniques dans la colonne cible
+    # Vérifiez les valeurs uniques dans la colonne cible
     # Split and clean the data (70% training, 30% testing)
     train, test = split_and_clean_data(data, target=target, test_size=0.3)
 
