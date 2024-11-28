@@ -48,5 +48,5 @@ if __name__ == "__main__":
     print(f"Original dataset shape: {data.shape}")
     print(f"Cleaned dataset shape: {cleaned_set_1.shape}")
 
-    # Save the cleaned dataset to 'cleaned_set_1.csv'
-    cleaned_set_1.to_csv("dataset\encoded_set_1_without_missing_values.csv", index=False)
+    # Save the cleaned dataset to a new CSV file
+    cleaned_set_1.to_csv("dataset/no_mv_set_1.csv", index=False)
