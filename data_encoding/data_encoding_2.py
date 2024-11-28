@@ -101,6 +101,6 @@ def main(input_csv_path: str, output_csv_path: str):
     print(f"Processed dataset saved to {output_csv_path}")
 
 if __name__ == "__main__":
-    input_csv = Path("dataset\class_ny_arrests.csv")
-    output_csv = Path("dataset\encoded_set_1.csv")
+    input_csv = Path("../dataset/classification/class_ny_arrests.csv")
+    output_csv = Path("../dataset/classification/encoded_set_1.csv")
     main(input_csv, output_csv)
