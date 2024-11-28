@@ -34,7 +34,7 @@ def mvi_by_dropping(
 # Main function
 if __name__ == "__main__":
     # Load your dataset
-    file_path = "dataset\encoded_set_1.csv"  # Replace with the path to your CSV file
+    file_path = "dataset/classification/encoded_set_1.csv"  # Replace with the path to your CSV file
     data: DataFrame = read_csv(file_path)
 
     # Define thresholds
@@ -48,5 +48,5 @@ if __name__ == "__main__":
     print(f"Original dataset shape: {data.shape}")
     print(f"Cleaned dataset shape: {cleaned_set_1.shape}")
 
-    # Save the cleaned dataset to 'cleaned_set_1.csv'
-    cleaned_set_1.to_csv("dataset\encoded_set_1_without_missing_values.csv", index=False)
+    # Save the cleaned dataset to a new CSV file
+    cleaned_set_1.to_csv("dataset/classification/no_mv_set_1.csv", index=False)
