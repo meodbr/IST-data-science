@@ -16,11 +16,11 @@ def balance_oversampling(train_sep: DataFrame, most_frequent_class, target: str 
 
 def balance_SMOTE(train_base: DataFrame, train_sep: DataFrame, most_frequent_class, target: str = "class") -> DataFrame:
     RANDOM_STATE = 42
-    smote = SMOTE(sample_strategy="minority", random_state=RANDOM_STATE)
+    smote = SMOTE(sampling_strategy="minority", random_state=RANDOM_STATE)
     y = train_base.pop(target)
-    X = ndarray(train_base.values)
+    X = train_base.to_numpy()
     smote_X, smote_y = smote.fit_resample(X, y)
-    result = DataFrame(concat([smote_y, smote_X], axis=1))
+    result = DataFrame(concat([smote_y, DataFrame(smote_X)], axis=1))
     result.columns = [target] + train_base.columns.tolist()
     print(f"SMOTE applied to the minority class, new size: {len(result[result[target] == 1])}")
     print(f"Shape: {result.shape}")
@@ -29,7 +29,7 @@ def balance_SMOTE(train_base: DataFrame, train_sep: DataFrame, most_frequent_cla
 
 def balance_dataset(train: DataFrame, method = "undersampling", target: str = "class") -> DataFrame:
     # Separate the dataset into target = 0 et target = 1 (positive and negative classes)
-    train_separated = [Series(train[train[target] == 0]), Series(train[train[target] == 1])]
+    train_separated = [train[train[target] == 0], train[train[target] == 1]]
 
     # get the most frequent class
     most_frequent_class = 0 if len(train_separated[0]) > len(train_separated[1]) else 1
