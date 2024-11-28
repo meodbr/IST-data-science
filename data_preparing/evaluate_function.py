@@ -13,7 +13,7 @@ def split_and_clean_data(data: DataFrame, target: str = "class", test_size: floa
 def main(dataset_path: str, target: str = "class"):
     # Load the dataset
     data: DataFrame = read_csv(dataset_path)
-    
+    # Vérifiez les valeurs uniques dans la colonne cible
     # Split and clean the data (70% training, 30% testing)
     train, test = split_and_clean_data(data, target=target, test_size=0.3)
     
@@ -23,13 +23,13 @@ def main(dataset_path: str, target: str = "class"):
     # Plot and save the evaluation results
     figure()
     plot_multibar_chart(
-        ["NB", "KNN"], eval_results, title="Evaluation after Dropping Outliers", percentage=True
+        ["NB", "KNN"], eval_results, title="Evaluation after do Zscore Scaler", percentage=True
     )
-    savefig("images/evaluation_after_dropping_outliers.png")
+    savefig("Data_science_project/data_preparing/images/evaluation_scaled_zscore.png")
     show()
 
 
 
 # Example of running the main function with your dataset
-dataset_path = "../dataset/classification/class_financial_distress_drop_outliers.csv"  # Change this path to your actual dataset
+dataset_path = "/home/mina/Documents/portugal/dataScience/class_financial_distress_scaled_zscore.csv"  # Change this path to your actual dataset
 main(dataset_path, target="CLASS")  # "CLASS" should be the target variable of your dataset
