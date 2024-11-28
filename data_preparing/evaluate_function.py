@@ -14,7 +14,7 @@ def split_and_clean_data(data: DataFrame, target: str = "class", test_size: floa
 def main(dataset_path: str, target: str = "class", balancing_method: str = "nothing", divide_by = 1) -> None:
     # Load the dataset
     data: DataFrame = read_csv(dataset_path)
-    
+    # Vérifiez les valeurs uniques dans la colonne cible
     # Split and clean the data (70% training, 30% testing)
     train, test = split_and_clean_data(data, target=target, test_size=0.3)
 
@@ -40,14 +40,5 @@ def main(dataset_path: str, target: str = "class", balancing_method: str = "noth
 
 
 # Example of running the main function with your dataset
-balancing_method = "SMOTE"  # Change this to "nothing", "undersampling", "oversampling" or "SMOTE" if you want to use another method
-
-# divide_by = 10  # Change this to 1 if you don't want to decimate the dataset
-# dataset_path = "../dataset/classification/set1_encoded.csv"  # Change this path to your actual dataset
-# target = "LAW_CAT_CD"
-
-divide_by = 1  # Change this to 1 if you don't want to decimate the dataset
-dataset_path = "dataset/classification/class_financial_distress.csv"  # Change this path to your actual dataset
-target = "CLASS"
-
-main(dataset_path, target, balancing_method, divide_by)  # "CLASS" should be the target variable of your dataset
+dataset_path = "../dataset/classification/class_financial_distress_drop_outliers.csv"  # Change this path to your actual dataset
+main(dataset_path, target="CLASS")  # "CLASS" should be the target variable of your dataset
