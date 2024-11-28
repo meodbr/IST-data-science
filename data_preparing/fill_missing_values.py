@@ -49,7 +49,7 @@ def mvi_by_filling(data: DataFrame, strategy: str = "frequent") -> DataFrame:
 
 if __name__ == "__main__":
     # Load your dataset
-    file_path = "dataset/classification/encoded_set_1.csv"  # Replace with the path to your CSV file
+    file_path = "../dataset/classification/encoded_set_1.csv"  # Replace with the path to your CSV file
     data: DataFrame = read_csv(file_path)
 
     new_df = mvi_by_filling(data, strategy="frequent")
@@ -60,4 +60,4 @@ if __name__ == "__main__":
     print(f"Cleaned dataset shape: {new_df.shape}")
 
     # Save the cleaned dataset to 'cleaned_set_1.csv'
-    new_df.to_csv("dataset/classification/no_mv_set_1.csv", index=False)
+    new_df.to_csv("../dataset/classification/encoded_set_1_with_filled_missing_values.csv", index=False)

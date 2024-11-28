@@ -23,19 +23,13 @@ if numeric_vars:
         summary = df[numeric_vars].describe()
         top_threshold, bottom_threshold = determine_outlier_thresholds_for_var(summary[var])
 
-        # Compute the median of the column
-        median: float = df[var].median()
-
-        # Replace outliers with the median value
-        df[var] = df[var].apply(lambda x: median if x > top_threshold or x < bottom_threshold else x)
-
-    # Replace missing values with the median
-    for var in numeric_vars:
-        median: float = df[var].median()
-        df[var].fillna(median, inplace=True)
+        # Truncate outliers
+        df[var] = df[var].apply(
+            lambda x: top_threshold if x > top_threshold else bottom_threshold if x < bottom_threshold else x
+        )
 
     # Save the cleaned dataset to a new CSV file
-    df.to_csv("../dataset/classification/encoded_set1_replacing_outliers.csv", index=False)
-    print(f"Data after dropping outliers: {df.shape}")
+    df.to_csv("../dataset/classification/encoded_set_1_truncate_outliers.csv", index=False)
+    print(f"Data after truncating outliers: {df.shape}")
 else:
     print("There are no numeric variables in the dataset.")
