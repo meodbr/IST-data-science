@@ -644,6 +644,7 @@ def run_KNN(trnX, trnY, tstX, tstY, metric="accuracy") -> dict[str, float]:
     best_performance: float = 0
     eval: dict[str, float] = {}
     for k in kvalues:
+        print(f"Running KNN with k={k}")
         clf = KNeighborsClassifier(n_neighbors=k, metric="euclidean")
         clf.fit(trnX, trnY)
         prdY: ndarray = clf.predict(tstX)
