@@ -27,14 +27,15 @@ def balance_SMOTE(train_base: DataFrame, train_sep: DataFrame, most_frequent_cla
     return result
 
 
-def balance_dataset(method = "undersampling", train: DataFrame, target: str = "class") -> DataFrame:
+def balance_dataset(train: DataFrame, method = "undersampling", target: str = "class") -> DataFrame:
     # Separate the dataset into target = 0 et target = 1 (positive and negative classes)
     train_separated = [Series(train[train[target] == 0]), Series(train[train[target] == 1])]
 
     # get the most frequent class
     most_frequent_class = 0 if len(train_separated[0]) > len(train_separated[1]) else 1
 
-    print(f"Most frequent class: {"Negative" if most_frequent_class == 0 else "Positive"}")
+    text = "Negative" if most_frequent_class == 0 else "Positive"
+    print(f"Most frequent class: {text}")
     print(f"Positives : {len(train_separated[1])}, Negatives : {len(train_separated[0])}")
 
     # use the method to balance the dataset

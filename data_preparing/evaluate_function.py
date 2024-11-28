@@ -11,7 +11,7 @@ def split_and_clean_data(data: DataFrame, target: str = "class", test_size: floa
     
     return train, test
 
-def main(dataset_path: str, target: str = "class", balancing_method: str = "nothing") -> None:
+def main(dataset_path: str, target: str = "class", balancing_method: str = "nothing", divide_by = 1) -> None:
     # Load the dataset
     data: DataFrame = read_csv(dataset_path)
     
@@ -20,7 +20,11 @@ def main(dataset_path: str, target: str = "class", balancing_method: str = "noth
 
     # Balance the dataset
     if balancing_method != "nothing":
-        train = balance_dataset(balancing_method, train, target=target)
+        train = balance_dataset(train, balancing_method, target=target)
+
+    # Decimate the dataset
+    if divide_by != 1:
+        train = train.sample(frac=1/divide_by, random_state=42)
     
     # Evaluate the approach
     eval_results: dict[str, list] = evaluate_approach(train, test, target=target, metric="accuracy")
@@ -36,6 +40,14 @@ def main(dataset_path: str, target: str = "class", balancing_method: str = "noth
 
 
 # Example of running the main function with your dataset
-dataset_path = "../dataset/classification/class_financial_distress_drop_outliers.csv"  # Change this path to your actual dataset
 balancing_method = "nothing"  # Change this to "nothing", "undersampling", "oversampling" or "SMOTE" if you want to use another method
-main(dataset_path, target="CLASS", balancing_method="nothing")  # "CLASS" should be the target variable of your dataset
+
+# divide_by = 10  # Change this to 1 if you don't want to decimate the dataset
+# dataset_path = "../dataset/classification/set1_encoded.csv"  # Change this path to your actual dataset
+# target = "LAW_CAT_CD"
+
+divide_by = 1  # Change this to 1 if you don't want to decimate the dataset
+dataset_path = "../dataset/classification/class_financial_distress.csv"  # Change this path to your actual dataset
+target = "CLASS"
+
+main(dataset_path, target, balancing_method, divide_by)  # "CLASS" should be the target variable of your dataset
