@@ -3,6 +3,11 @@ from sklearn.preprocessing import OneHotEncoder
 from numpy import ndarray
 from pandas import DataFrame, concat
 from pathlib import Path
+from math import sin, cos, pi
+import pandas as pd
+import numpy as np
+
+
 
 def ordinal_encode_column(df: DataFrame, column: str, encoding_map: dict = None) -> DataFrame:
     """
@@ -18,34 +23,62 @@ def ordinal_encode_column(df: DataFrame, column: str, encoding_map: dict = None)
         pd.DataFrame: The dataframe with the column encoded.
     """
     if encoding_map:
-        df[column] = (
-            df[column]
-            .fillna(-1)  # Fill NaN with a numeric placeholder value
-            .replace(encoding_map)
-            .astype(int)  # Safely cast to integer
-        )
+        df[column] = df[column].map(encoding_map)
+
     else:
-        unique_values = df[column].fillna("missing").astype(str).unique()
-        encoding_map = {value: idx for idx, value in enumerate(sorted(unique_values))}
-        df[column] = (
-            df[column]
-            .fillna("missing")
-            .astype(str)
-            .replace(encoding_map)
-            .astype(int)  # Safely cast to integer
-        )
+        df[column] = pd.Categorical(df[column]).codes
+    # Remplace les valeurs -1 (catégories manquantes dans pd.Categorical) par NaN
+    df[column] = df[column].replace(-1, float("nan"))
     return df
 
 def dummify(df: DataFrame, vars_to_dummify: list[str]) -> DataFrame:
-    other_vars = [col for col in df.columns if col not in vars_to_dummify]
-    enc = OneHotEncoder(
-        handle_unknown="ignore", sparse_output=False, dtype="bool", drop=None
+    dummy = pd.get_dummies(
+        df[vars_to_dummify], 
+        prefix=vars_to_dummify, 
+        dtype="int"
     )
-    trans: ndarray = enc.fit_transform(df[vars_to_dummify])
-    new_vars = enc.get_feature_names_out(vars_to_dummify)
-    dummy = pd.DataFrame(trans, columns=new_vars, index=df.index)
-    final_df = concat([df[other_vars], dummy], axis=1)
-    return final_df
+    other_vars = [col for col in df.columns if col not in vars_to_dummify]
+    return pd.concat([df[other_vars], dummy], axis=1)
+
+
+def encode_date_features(data: pd.DataFrame, date_col: str, reference_date: str = "01/01/2006") -> pd.DataFrame:
+    """
+    Encode les informations temporelles d'une colonne de date :
+    - Jour de la semaine (cyclique)
+    - Jour du mois (cyclique)
+    - Mois de l'année (cyclique)
+    - Nombre de jours écoulés depuis une date de référence
+
+    Args:
+        data (pd.DataFrame): DataFrame contenant la colonne de date.
+        date_col (str): Nom de la colonne contenant les dates au format 'dd/mm/yyyy'.
+        reference_date (str): Date de référence au format 'dd/mm/yyyy' (par défaut : 01/01/2006).
+    
+    Returns:
+        pd.DataFrame: DataFrame avec les nouvelles colonnes ajoutées.
+    """
+    data[date_col] = pd.to_datetime(data[date_col], format="%m/%d/%Y", errors="coerce")
+    ref_date = pd.to_datetime(reference_date, format="%m/%d/%Y")
+    invalid_dates = data[date_col].isna().sum()
+    if invalid_dates > 0:
+        print(f"{invalid_dates} valeurs invalides dans la colonne '{date_col}' ont été transformées en NaT.")
+
+    # Calculer toutes les informations temporelles avec Numpy
+    day_of_week = data[date_col].dt.weekday + 1
+    day_of_month = data[date_col].dt.day
+    month_of_year = data[date_col].dt.month
+    days_since_ref = (data[date_col] - ref_date).dt.days
+
+    data["day_of_week_sin"] = np.sin(2 * np.pi * day_of_week / 7)
+    data["day_of_week_cos"] = np.cos(2 * np.pi * day_of_week / 7)
+    data["day_of_month_sin"] = np.sin(2 * np.pi * day_of_month / 31)
+    data["day_of_month_cos"] = np.cos(2 * np.pi * day_of_month / 31)
+    data["month_of_year_sin"] = np.sin(2 * np.pi * month_of_year / 12)
+    data["month_of_year_cos"] = np.cos(2 * np.pi * month_of_year / 12)
+    data["days_since_reference"] = days_since_ref
+
+    return data
+
 
 def main(input_csv_path: str, output_csv_path: str):
     data = pd.read_csv(input_csv_path)
@@ -54,16 +87,19 @@ def main(input_csv_path: str, output_csv_path: str):
     data = ordinal_encode_column(data, "PD_CD")
     perp_sex_map = {"M": 0, "F": 1}
     age_group_map = {"UNKNOWN":0, "<18": 1, "18-24": 2, "25-44": 3, "45-64": 4, "65+": 5}
+    law_cat_cd_map = {"M": 0, "F": 1}
     data = ordinal_encode_column(data, "PERP_SEX", perp_sex_map)
     data = ordinal_encode_column(data, "AGE_GROUP", age_group_map)
     data = ordinal_encode_column(data, "ARREST_BORO")
     data = ordinal_encode_column(data, "LAW_CODE")
+    data = ordinal_encode_column(data, "LAW_CAT_CD", law_cat_cd_map)
     vars_to_dummify = ["PERP_RACE"]
     data = dummify(data, vars_to_dummify)
+    data = encode_date_features(data, "ARREST_DATE")
     data.to_csv(output_csv_path, index=False)
     print(f"Processed dataset saved to {output_csv_path}")
 
 if __name__ == "__main__":
-    input_csv = Path("../dataset/class_ny_arrests.csv")
-    output_csv = Path("../dataset/encoding_v2_set_1.csv")
+    input_csv = Path("dataset\class_ny_arrests.csv")
+    output_csv = Path("dataset\encoded_set_1.csv")
     main(input_csv, output_csv)
