@@ -23,13 +23,13 @@ def main(dataset_path: str, target: str = "class"):
     # Plot and save the evaluation results
     figure()
     plot_multibar_chart(
-        ["NB", "KNN"], eval_results, title="Evaluation after Dropping Outliers", percentage=True
+        ["NB", "KNN"], eval_results, title="Set1 Evaluation after Dropping Outliers", percentage=True
     )
-    savefig("images/evaluation_after_dropping_outliers.png")
+    savefig("images/set1_evaluation_after_dropping_outliers.png")
     show()
 
 
 
 # Example of running the main function with your dataset
-dataset_path = "../dataset/classification/class_financial_distress_drop_outliers.csv"  # Change this path to your actual dataset
-main(dataset_path, target="CLASS")  # "CLASS" should be the target variable of your dataset
+dataset_path = "../dataset/classification/encoded_set_1_drop_outliers.csv"  # Change this path to your actual dataset
+main(dataset_path, target="LAW_CAT_CD")  # "CLASS" should be the target variable of your dataset
