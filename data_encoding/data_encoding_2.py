@@ -82,7 +82,8 @@ def encode_date_features(data: pd.DataFrame, date_col: str, reference_date: str 
 
 def main(input_csv_path: str, output_csv_path: str):
     data = pd.read_csv(input_csv_path)
-    columns_to_drop = ["ARREST_KEY", "PD_DESC", "KY_CD", "OFNS_DESC"]
+    data = encode_date_features(data, "ARREST_DATE")
+    columns_to_drop = ["ARREST_KEY", "PD_DESC", "KY_CD", "OFNS_DESC", "ARREST_DATE"]
     data = data.drop(columns=columns_to_drop)
     data = ordinal_encode_column(data, "PD_CD")
     perp_sex_map = {"M": 0, "F": 1}
@@ -95,7 +96,7 @@ def main(input_csv_path: str, output_csv_path: str):
     data = ordinal_encode_column(data, "LAW_CAT_CD", law_cat_cd_map)
     vars_to_dummify = ["PERP_RACE"]
     data = dummify(data, vars_to_dummify)
-    data = encode_date_features(data, "ARREST_DATE")
+    
     data.to_csv(output_csv_path, index=False)
     print(f"Processed dataset saved to {output_csv_path}")
 

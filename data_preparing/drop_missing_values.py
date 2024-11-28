@@ -33,12 +33,12 @@ def mvi_by_dropping(
 # Main function
 if __name__ == "__main__":
     # Load your dataset
-    file_path = "../dataset/class_ny_arrests.csv"  # Replace with the path to your CSV file
+    file_path = "dataset\encoded_set_1.csv"  # Replace with the path to your CSV file
     data: DataFrame = read_csv(file_path)
 
     # Define thresholds
     min_pct_per_variable = 0.7  # Keep variables with at least 70% valid values
-    min_pct_per_record = 0.9    # Keep records with at least 90% valid values
+    min_pct_per_record = 1 # Keep records with at least 90% valid values
 
     # Apply missing value removal and name the cleaned dataset as 'cleaned_set_1'
     cleaned_set_1 = mvi_by_dropping(data, min_pct_per_var=min_pct_per_variable, min_pct_per_rec=min_pct_per_record)
@@ -48,5 +48,4 @@ if __name__ == "__main__":
     print(f"Cleaned dataset shape: {cleaned_set_1.shape}")
 
     # Save the cleaned dataset to 'cleaned_set_1.csv'
-    cleaned_set_1.to_csv("cleaned_set_1.csv", index=False)
-    print("Cleaned dataset saved as 'cleaned_set_1.csv'.")
+    cleaned_set_1.to_csv("dataset\encoded_set_1_without_missing_values.csv", index=False)
