@@ -40,14 +40,14 @@ def main(dataset_path: str, target: str = "class", balancing_method: str = "noth
 
 
 # Example of running the main function with your dataset
-balancing_method = "SMOTE"  # Change this to "nothing", "undersampling", "oversampling" or "SMOTE" if you want to use another method
+balancing_method = "undersampling"  # Change this to "nothing", "undersampling", "oversampling" or "SMOTE" if you want to use another method
 
-# divide_by = 10  # Change this to 1 if you don't want to decimate the dataset
-# dataset_path = "../dataset/classification/set1_encoded.csv"  # Change this path to your actual dataset
-# target = "LAW_CAT_CD"
+divide_by = 10  # Change this to 1 if you don't want to decimate the dataset
+dataset_path = "dataset/classification/no_mv_set_1.csv"  # Change this path to your actual dataset
+target = "LAW_CAT_CD"
 
-divide_by = 1  # Change this to 1 if you don't want to decimate the dataset
-dataset_path = "dataset/classification/class_financial_distress.csv"  # Change this path to your actual dataset
-target = "CLASS"
+# divide_by = 1  # Change this to 1 if you don't want to decimate the dataset
+# dataset_path = "dataset/classification/class_financial_distress.csv"  # Change this path to your actual dataset
+# target = "CLASS"
 
 main(dataset_path, target, balancing_method, divide_by)  # "CLASS" should be the target variable of your dataset
