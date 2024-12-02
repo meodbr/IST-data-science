@@ -4,6 +4,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from matplotlib.pyplot import figure, savefig, show
 from dslabs_functions import CLASS_EVAL_METRICS, DELTA_IMPROVE, plot_multiline_chart
 from dslabs_functions import read_train_test_from_files, plot_evaluation_results
+from matplotlib.pyplot import figure, savefig
 
 def knn_study(
         trnX: ndarray, trnY: array, tstX: ndarray, tstY: array, k_max: int=19, lag: int=2, metric='accuracy'
@@ -35,10 +36,10 @@ def knn_study(
 
     return best_model, best_params
 
-file_tag = 'stroke'
-train_filename = 'data/stroke_train_smote.csv'
-test_filename = 'data/stroke_test.csv'
-target = 'stroke'
+file_tag = 'JURISDICTION_CODE'
+train_filename = '/home/mina/Documents/portugal/dataScience/Data_science_project/train_dataset_1.csv'
+test_filename = '/home/mina/Documents/portugal/dataScience/Data_science_project/test_dataset_1.csv'
+target = 'JURISDICTION_CODE'
 eval_metric = 'accuracy'
 
 trnX, tstX, trnY, tstY, labels, vars = read_train_test_from_files(train_filename, test_filename, target)
@@ -47,5 +48,38 @@ print(f'Labels={labels}')
 
 figure()
 best_model, params = knn_study(trnX, trnY, tstX, tstY, k_max=25, metric=eval_metric)
-savefig(f'images/{file_tag}_knn_{eval_metric}_study.png')
+savefig(f'/home/mina/Documents/portugal/dataScience/Data_science_project/classification/images/{file_tag}_knn_{eval_metric}_study.png')
+show()
+
+prd_trn: array = best_model.predict(trnX)
+prd_tst: array = best_model.predict(tstX)
+figure()
+plot_evaluation_results(params, trnY, prd_trn, tstY, prd_tst, labels)
+savefig(f'/home/mina/Documents/portugal/dataScience/Data_science_project/classification/images/{file_tag}_knn_{params["name"]}_best_{params["metric"]}_eval.png')
+show()
+
+distance: Literal["manhattan", "euclidean", "chebyshev"] = params["params"][1]
+K_MAX = 25
+kvalues: list[int] = [i for i in range(1, K_MAX, 2)]
+y_tst_values: list = []
+y_trn_values: list = []
+acc_metric: str = "accuracy"
+for k in kvalues:
+    clf = KNeighborsClassifier(n_neighbors=k, metric=distance)
+    clf.fit(trnX, trnY)
+    prd_tst_Y: array = clf.predict(tstX)
+    prd_trn_Y: array = clf.predict(trnX)
+    y_tst_values.append(CLASS_EVAL_METRICS[acc_metric](tstY, prd_tst_Y))
+    y_trn_values.append(CLASS_EVAL_METRICS[acc_metric](trnY, prd_trn_Y))
+
+figure()
+plot_multiline_chart(
+    kvalues,
+    {"Train": y_trn_values, "Test": y_tst_values},
+    title=f"KNN overfitting study for {distance}",
+    xlabel="K",
+    ylabel=str(eval_metric),
+    percentage=True,
+)
+savefig(f"/home/mina/Documents/portugal/dataScience/Data_science_project/classification/images/{file_tag}_knn_overfitting.png")
 show()
