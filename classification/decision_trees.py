@@ -41,10 +41,10 @@ def trees_study(
 
     return best_model, best_params
 
-file_tag = 'set_1'
-train_filename = 'dataset/test_dataset_1.csv'
-test_filename = 'dataset/train_dataset_1.csv'
-target = 'JURISDICTION_CODE'
+file_tag = 'set_2'
+train_filename = 'dataset/train_dataset_2.csv'
+test_filename = 'dataset/test_dataset_2.csv'
+target = 'CLASS'
 eval_metric = 'accuracy'
 
 trnX, tstX, trnY, tstY, labels, vars = read_train_test_from_files(train_filename, test_filename, target)
