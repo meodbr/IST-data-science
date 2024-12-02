@@ -60,4 +60,4 @@ if __name__ == "__main__":
     print(f"Cleaned dataset shape: {new_df.shape}")
 
     # Save the cleaned dataset to 'cleaned_set_1.csv'
-    new_df.to_csv("../dataset/classification/encoded_set_1_with_filled_missing_values.csv", index=False)
+    new_df.to_csv("../dataset/classification/encoded_set_1_filled_mv.csv", index=False)
