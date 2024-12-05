@@ -1,5 +1,22 @@
+# ---
+# jupyter:
+#   jupytext:
+#     cell_metadata_filter: -all
+#     custom_cell_magics: kql
+#     text_representation:
+#       extension: .py
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.11.2
+#   kernelspec:
+#     display_name: Python 3
+#     language: python
+#     name: python3
+# ---
+
 # %%
 from pandas import DataFrame, Index, read_csv
+from tqdm import tqdm
 from dslabs_functions import (
     select_low_variance_variables,
     study_variance_for_feature_selection,
@@ -24,10 +41,6 @@ target = "CLASS"
 file_tag = "set_2"
 train: DataFrame = read_csv("../dataset/train_dataset_2.csv")
 
-print("Original variables", train.columns.to_list())
-vars2drop: list[str] = select_low_variance_variables(train, 3, target=target)
-print("Variables to drop", vars2drop)
-
 # %%
 from math import ceil
 from matplotlib.pyplot import savefig, show, figure
@@ -48,7 +61,7 @@ def study_variance_for_feature_selection(
     ]
     results: dict[str, list] = {"NB": [], "KNN": []}
     summary5: DataFrame = train.describe()
-    for thresh in options:
+    for thresh in tqdm(options):
         vars2drop: Index[str] = summary5.columns[
             summary5.loc["std"] * summary5.loc["std"] < thresh
         ]
@@ -75,7 +88,7 @@ def study_variance_for_feature_selection(
     return results
 
 
-eval_metric = "recall"
+eval_metric = "accuracy"
 test: DataFrame = read_csv("../dataset/test_dataset_2.csv")
 
 figure(figsize=(2 * HEIGHT, HEIGHT))
@@ -113,6 +126,7 @@ train_cp, test_cp = apply_feature_selection(
     train, test, vars2drop, filename=f"../dataset/{file_tag}", tag="lowvar"
 )
 print(f"Original data: train={train.shape}, test={test.shape}")
+print(f"Vars2drop : {vars2drop}")
 print(f"After low variance FS: train_cp={train_cp.shape}, test_cp={test_cp.shape}")
 
 # %%
