@@ -5,7 +5,7 @@ from dslabs_functions import (
 )
 
 # Update the file path to the correct location of your dataset
-file_path = "../dataset/classification/encoded_set_1_with_filled_missing_values.csv"
+file_path = "../dataset/classification/encoded_set_1_filled_mv.csv"
 
 # Load the dataset
 data: DataFrame = read_csv(file_path, na_values="", parse_dates=True)

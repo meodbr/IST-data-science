@@ -82,9 +82,18 @@ def encode_date_features(data: pd.DataFrame, date_col: str, reference_date: str 
 
 def main(input_csv_path: str, output_csv_path: str):
     data = pd.read_csv(input_csv_path)
+
+    # Encode 'JURISDICTION_CODE' preserving missing values
+    data["JURISDICTION_CODE"] = data["JURISDICTION_CODE"].apply(
+        lambda x: 1.0 if pd.notna(x) and x <= 2 else (0.0 if pd.notna(x) else np.nan)
+    )
+
+    
     data = encode_date_features(data, "ARREST_DATE")
     columns_to_drop = ["ARREST_KEY", "PD_DESC", "KY_CD", "OFNS_DESC", "ARREST_DATE"]
     data = data.drop(columns=columns_to_drop)
+
+    # Ordinal encoding
     data = ordinal_encode_column(data, "PD_CD")
     perp_sex_map = {"M": 0, "F": 1}
     age_group_map = {"UNKNOWN":0, "<18": 1, "18-24": 2, "25-44": 3, "45-64": 4, "65+": 5}
@@ -94,6 +103,8 @@ def main(input_csv_path: str, output_csv_path: str):
     data = ordinal_encode_column(data, "ARREST_BORO")
     data = ordinal_encode_column(data, "LAW_CODE")
     data = ordinal_encode_column(data, "LAW_CAT_CD", law_cat_cd_map)
+
+    # One-hot encoding for categorical variable
     vars_to_dummify = ["PERP_RACE"]
     data = dummify(data, vars_to_dummify)
     
