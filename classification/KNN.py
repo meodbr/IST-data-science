@@ -36,11 +36,13 @@ def knn_study(
 
     return best_model, best_params
 
-file_tag = 'JURISDICTION_CODE'
-train_filename = '/home/mina/Documents/portugal/dataScience/Data_science_project/train_dataset_1.csv'
-test_filename = '/home/mina/Documents/portugal/dataScience/Data_science_project/test_dataset_1.csv'
-target = 'JURISDICTION_CODE'
+file_tag = 'CLASS'
+train_filename = '/home/mina/Documents/portugal/dataScience/set_2_train_redundant.csv'
+test_filename = '/home/mina/Documents/portugal/dataScience/set_2_test_redundant.csv'
+target = 'CLASS'
 eval_metric = 'accuracy'
+
+from typing import Literal
 
 trnX, tstX, trnY, tstY, labels, vars = read_train_test_from_files(train_filename, test_filename, target)
 print(f'Train#={len(trnX)} Test#={len(tstX)}')
