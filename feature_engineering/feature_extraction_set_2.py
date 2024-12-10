@@ -1,3 +1,20 @@
+# -*- coding: utf-8 -*-
+# ---
+# jupyter:
+#   jupytext:
+#     cell_metadata_filter: -all
+#     custom_cell_magics: kql
+#     text_representation:
+#       extension: .py
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.11.2
+#   kernelspec:
+#     display_name: Python 3
+#     language: python
+#     name: python3
+# ---
+
 # %%
 from pandas import read_csv, DataFrame
 from matplotlib.pyplot import figure, show, gca
@@ -31,5 +48,16 @@ plot_bar_chart(
 )
 ax.plot(pca.explained_variance_ratio_)
 show()
+
+# %%
+# Calcul du cumul de la variance expliquée
+cumulative_variance = pca.explained_variance_ratio_.cumsum()
+
+target = 99
+
+# Trouver le nombre minimal de composantes pour expliquer 95% de la variance
+n_components_95 = (cumulative_variance >= target/100).argmax() + 1
+
+print(f"Nombre de composantes nécessaires pour expliquer {target}% de la variance : {n_components_95}")
 
 # %%
