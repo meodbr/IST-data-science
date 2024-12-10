@@ -2,10 +2,10 @@
 
 from dslabs_functions import read_train_test_from_files
 
-file_tag = "CLASS_sans_redondance"
-train_filename = "/home/mina/Documents/portugal/dataScience/train_dataset_2.csv"
-test_filename = "/home/mina/Documents/portugal/dataScience/test_dataset_2.csv"
-target = "CLASS"
+file_tag = 'JURISDICTION_CODE'
+train_filename = '/home/mina/Documents/portugal/dataScience/train_dataset_1.csv'
+test_filename = '/home/mina/Documents/portugal/dataScience/test_dataset_1.csv'
+target = 'JURISDICTION_CODE'
 eval_metric = "accuracy"
 
 
