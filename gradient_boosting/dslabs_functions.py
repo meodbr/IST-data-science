@@ -175,52 +175,19 @@ def plot_horizontal_bar_chart(
     xlabel: str = "",
     ylabel: str = "",
     percentage: bool = False,
-    fontsize: int = 10,         # Taille du texte des axes et du titre
-    text_fontsize: int = 8,     # Taille du texte dans les barres
-    legend_fontsize: int = 8,   # Taille de la légende (si ajoutée)
-    bar_label_fontsize: int = 8 # Taille des étiquettes des barres
 ) -> Axes:
     if ax is None:
         ax = gca()
     if percentage:
         ax.set_xlim((0, 1))
-    if not error:
+    if error == []:
         error = [0] * len(elements)
-
-    # Définir les étiquettes
     ax = set_chart_labels(ax=ax, title=title, xlabel=xlabel, ylabel=ylabel)
     y_pos: list = list(arange(len(elements)))
 
-    # Tracer les barres
-    bars = ax.barh(
-        y_pos, values, xerr=error, align="center", error_kw={"lw": 0.5, "ecolor": "r"}
-    )
-
-    # Ajouter les valeurs sur chaque barre
-    for bar, element, value in zip(bars, elements, values):
-        width = bar.get_width()
-        ax.text(
-            width + 0.02 if width > 0 else width - 0.02,  # Position du texte
-            bar.get_y() + bar.get_height() / 2,
-            f"{element} ({value:.2f})",
-            ha="left" if width > 0 else "right",
-            va="center",
-            fontsize=bar_label_fontsize,
-            color="black",
-        )
-
-    # Ajuster les ticks et le titre
+    ax.barh(y_pos, values, xerr=error, align="center", error_kw={"lw": 0.5, "ecolor": "r"})
     ax.set_yticks(y_pos, labels=elements)
-    ax.invert_yaxis()  # Inverser l'ordre des étiquettes
-    ax.tick_params(axis='y', labelsize=fontsize)
-    ax.tick_params(axis='x', labelsize=fontsize)
-    ax.title.set_size(fontsize)
-    ax.xaxis.label.set_size(fontsize)
-    ax.yaxis.label.set_size(fontsize)
-
-    # Ajouter une légende (si nécessaire)
-    ax.legend(["Importance"], fontsize=legend_fontsize, loc="best")
-
+    ax.invert_yaxis()  # labels read top-to-bottom
     return ax
 
 
@@ -390,7 +357,7 @@ def analyse_date_granularity(data: DataFrame, var: str, levels: list[str]) -> nd
     cols: int = len(levels)
     fig: Figure
     axs: ndarray
-    fig, axs = subplots(2, cols, figsize=(cols * HEIGHT, HEIGHT), squeeze=False)
+    fig, axs = subplots(1, cols, figsize=(cols * HEIGHT, HEIGHT), squeeze=False)
     fig.suptitle(f"Granularity study for {var}")
 
     for i in range(cols):
