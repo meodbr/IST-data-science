@@ -33,7 +33,7 @@ my_palette = {
     "light grey": "#D2D3D4",
     "grey": "#939598",
     "black": "#000000",
-    "red": "#FF0000"
+    "red": "#FF0000",
 }
 
 colors_pale = [my_palette["salmon"], my_palette["blue2"], my_palette["acqua"]]
@@ -63,7 +63,6 @@ ACTIVE_COLORS = [
     my_palette["pale pink"],
     my_palette["lilac"],
     my_palette["purple"],
-
 ]
 
 cmap_orange = LinearSegmentedColormap.from_list("myCMPOrange", oranges)
@@ -75,9 +74,9 @@ FILL_COLOR = my_palette["blue2"]  # my_palette["pale blue"]
 DOT_COLOR = my_palette["blue3"]
 
 PAST_COLOR = FILL_COLOR
-FUTURE_COLOR = my_palette['pale pink']
-PRED_PAST_COLOR = my_palette['yellow']
-PRED_FUTURE_COLOR = my_palette['red']
+FUTURE_COLOR = my_palette["pale pink"]
+PRED_PAST_COLOR = my_palette["yellow"]
+PRED_FUTURE_COLOR = my_palette["red"]
 
 rcParams["axes.prop_cycle"] = cycler("color", ACTIVE_COLORS)
 
