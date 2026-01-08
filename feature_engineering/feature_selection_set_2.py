@@ -17,6 +17,7 @@
 # %%
 from pandas import DataFrame, Index, read_csv
 from tqdm import tqdm
+
 from dslabs_functions import (
     select_low_variance_variables,
     study_variance_for_feature_selection,

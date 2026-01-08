@@ -15,6 +15,7 @@
 #     name: python3
 # ---
 
+
 # %%
 from pandas import read_csv, DataFrame
 from matplotlib.pyplot import figure, show, gca
@@ -26,7 +27,6 @@ from dslabs_functions import plot_bar_chart
 
 data: DataFrame = read_csv("../dataset/set_2_train_redundant.csv")
 target = "CLASS"
-
 
 
 target_data: Series = data.pop(target)
@@ -56,8 +56,10 @@ cumulative_variance = pca.explained_variance_ratio_.cumsum()
 target = 99
 
 # Trouver le nombre minimal de composantes pour expliquer 95% de la variance
-n_components_95 = (cumulative_variance >= target/100).argmax() + 1
+n_components_95 = (cumulative_variance >= target / 100).argmax() + 1
 
-print(f"Nombre de composantes nécessaires pour expliquer {target}% de la variance : {n_components_95}")
+print(
+    f"Nombre de composantes nécessaires pour expliquer {target}% de la variance : {n_components_95}"
+)
 
 # %%
