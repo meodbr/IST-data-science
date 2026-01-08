@@ -4,9 +4,9 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from matplotlib.pyplot import subplots, show
 
 # MinMax_Scaler
-chemin = "../dataset/classification/encoded_set_1_replacing_outliers"
+chemin = "/home/mina/Documents/portugal/dataScience/class_financial_distress"
 data: DataFrame = read_csv(chemin+".csv", na_values="")
-target = "JURISDICTION_CODE"
+target = "CLASS"
 
 vars: list[str] = data.columns.to_list()
 vars.remove(target)  # On enlève la colonne cible de la liste des variables

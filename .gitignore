@@ -1,3 +1,5 @@
 # Ignorer le dossier dataset et tout son contenu
 dataset/
 *.pyc
+*.csv
+*.png

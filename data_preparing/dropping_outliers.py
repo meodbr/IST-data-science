@@ -6,10 +6,14 @@ from dslabs_functions import (
 )
 
 # Update the file path to the correct location of your dataset
-file_path = "../dataset/classification/encoded_set_1_filled_mv.csv"
+file_path = "../dataset/classification/class_financial_distress.csv"
 
 # Load the dataset
 data: DataFrame = read_csv(file_path, na_values="", parse_dates=True)
+
+# Drop missing values
+data.dropna(inplace=True)
+print(f"Data after dropping missing values: {data.shape}")
 
 # Handling outliers
 n_std: int = NR_STDEV
@@ -29,7 +33,7 @@ if numeric_vars is not None:
         df.drop(outliers.index, axis=0, inplace=True)
     
     # Save the cleaned dataset to a new CSV file
-    df.to_csv("../dataset/classification/encoded_set_1_drop_outliers.csv", index=False)
+    df.to_csv("class_financial_distress_drop_outliers.csv", index=False)
     print(f"Data after dropping outliers: {df.shape}")
 else:
     print("There are no numeric variables")
