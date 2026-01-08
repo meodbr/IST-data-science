@@ -1,2 +1,4 @@
 # Ignorer le dossier dataset et tout son contenu
 dataset/
+*.csv
+*.png
