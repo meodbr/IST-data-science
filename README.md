@@ -2,6 +2,8 @@
 
 Mina Cabaret, Ruben Rosa, Méo Desbois-Renaudin, Jade Le Roux
 
+IST - Instituto Supérior Técnico, Lisboa
+
 This repository is an academic data science project exploring a wide range of **machine learning, data preparation, and time-series analysis techniques**.
 
 The goal was not to build a single optimized model, but to **understand and compare methods**, experiment with different pipelines, and analyze how choices in data preprocessing and modeling affect results.
@@ -36,4 +38,5 @@ The repository includes both **Python scripts and Jupyter notebooks**, along wit
 This is an **academic project** developed at **Instituto Superior Técnico**, with an emphasis on:
 - learning by experimentation  
 - comparing approaches rather than optimizing a single solution  
+
 - documenting results through visualization  
